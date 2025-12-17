@@ -1,1 +1,539 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <title>MTI | IQL Brasil – Alexandre Boaventura (Riachuelo)</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <style>
+    :root{
+      --bg:#f8fafc;
+      --card:#ffffff;
+      --border:#e2e8f0;
+      --text:#0f172a;
+      --muted:#64748b;
+      --teal:#0f766e;
+      --orange:#f97316;
+      --orangeSoft:#fff7ed;
+      --tealSoft:#f0fdfa;
+      --shadow: 0 1px 3px rgba(15,23,42,.08);
+      --radius: 16px;
+      --mono: ui-monospace,SFMono-Regular,Menlo,Monaco,Consolas,"Liberation Mono","Courier New",monospace;
+      --sans: system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+    }
+    *{box-sizing:border-box}
+    body{margin:0;background:var(--bg);color:var(--text);font-family:var(--sans)}
+    .wrap{max-width:1120px;margin:0 auto;padding:18px}
+    .shadow{box-shadow:var(--shadow)}
+    .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius)}
+    .header{
+      color:#fff;
+      background: linear-gradient(90deg, #064e3b 0%, #0f766e 45%, #0f172a 100%);
+      padding:22px 18px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+      position:relative;
+      overflow:hidden;
+    }
+    .header-inner{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+    .pill{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:6px 10px;border-radius:999px;
+      font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;
+      background: rgba(13,148,136,.20);
+      border: 1px solid rgba(45,212,191,.25);
+      color:#ccfbf1;
+      width:max-content;
+    }
+    .h1{margin:6px 0 0;font-size:30px;line-height:1.1;font-weight:900}
+    .sub{margin:6px 0 0;color:#ccfbf1;font-weight:500;font-size:14px}
+    .right-head{display:flex;align-items:center;gap:14px}
+
+    /* LOGO MÁS GRANDE */
+    .logo{
+      height:80px;
+      width:auto;
+      filter: drop-shadow(0 4px 10px rgba(0,0,0,.25));
+    }
+
+    .statusbox{display:flex;flex-direction:column;align-items:flex-end;gap:6px}
+    .statusbadge{
+      display:inline-flex;align-items:center;gap:8px;
+      padding:10px 12px;border-radius:12px;
+      font-weight:900;
+      background: #22c55e; /* verde para IQL CALIENTE */
+      box-shadow: 0 8px 18px rgba(34,197,94,.25);
+      font-size:13px;
+      white-space:nowrap;
+    }
+    .smallmuted{font-size:12px;color:#99f6e4;font-weight:700}
+    main{margin-top:-14px}
+    .grid{display:grid;grid-template-columns:1fr;gap:14px}
+    @media(min-width:1024px){.grid{grid-template-columns: 360px 1fr}}
+    .side{display:flex;flex-direction:column;gap:14px}
+    .section{padding:16px}
+    .sec-title{
+      display:flex;align-items:center;gap:8px;
+      font-size:11px;font-weight:900;letter-spacing:.16em;text-transform:uppercase;
+      color:#94a3b8;margin-bottom:12px
+    }
+    .profile{display:flex;gap:12px;align-items:center;margin-bottom:14px}
+    .avatar{
+      width:56px;height:56px;border-radius:999px;
+      background:#f1f5f9;border:2px solid #e2e8f0;
+      display:grid;place-items:center;
+      color:#cbd5e1;font-weight:900;font-size:18px
+    }
+    .name{font-size:18px;font-weight:900;margin:0}
+    .role{font-size:13px;font-weight:900;color:var(--teal);margin-top:2px}
+    .tenure{font-size:12px;color:var(--muted);margin-top:2px;font-weight:700}
+    .kv{display:flex;gap:10px;align-items:center;color:#475569;font-size:13px;margin:8px 0}
+    .icpbar{margin-bottom:10px}
+    .icphead{display:flex;justify-content:space-between;font-size:11px;font-weight:900;letter-spacing:.08em;text-transform:uppercase;color:#64748b;margin-bottom:6px}
+    .barbg{height:8px;background:#f1f5f9;border-radius:999px;overflow:hidden}
+    .barfill{height:100%;border-radius:999px}
+    .note{
+      margin-top:10px;padding:10px;border-radius:12px;
+      background: var(--tealSoft);
+      border:1px solid #ccfbf1;
+      color:#134e4a;font-size:12px;line-height:1.45
+    }
+
+    /* Tabs */
+    .tabs-wrap{padding:0}
+    .tabs{
+      display:inline-flex;gap:6px;
+      padding:6px;border-radius:14px;border:1px solid var(--border);
+      background:#fff;
+    }
+    .tabbtn{
+      border:0;cursor:pointer;
+      padding:10px 14px;border-radius:12px;
+      font-weight:900;font-size:13px;color:#64748b;background:transparent;
+      transition: all .15s ease;
+      white-space:nowrap;
+    }
+    .tabbtn:hover{background:#f8fafc}
+    .tabbtn.active{background:var(--teal);color:#fff;box-shadow:var(--shadow)}
+    .tabbtn.orange.active{background:var(--orange)}
+    .panel{display:none}
+    .panel.active{display:block}
+
+    /* Diagnosis cards */
+    .diaggrid{display:grid;gap:14px}
+    @media(min-width:768px){.diaggrid{grid-template-columns:1fr 1fr}}
+    .good{border-top:4px solid #14b8a6}
+    .bad{border-top:4px solid var(--orange)}
+    .box{padding:16px}
+
+    /* Títulos sin recuadro */
+    .boxtitle{
+      margin:0 0 10px;
+      font-size:14px;
+      font-weight:900;
+      display:flex;
+      align-items:center;
+      gap:8px;
+      background:none;
+      border:none;
+      padding:0;
+    }
+    .boxtitle.good{color:#0f766e}
+    .boxtitle.bad{color:#9a3412}
+
+    ul{margin:0;padding-left:18px;color:#475569;font-size:13px;line-height:1.5}
+    .conclusion{
+      margin-top:14px;padding:16px;border-radius:14px;
+      background:#f1f5f9;border:1px solid var(--border);
+      color:#475569;font-size:13px;line-height:1.55
+    }
+    .conclusion h3{margin:0 0 6px;font-size:14px;font-weight:900;color:#0f172a}
+
+    /* Timeline */
+    .timeline{padding:18px}
+    .titem{position:relative;padding-left:18px;margin:14px 0}
+    .titem:before{
+      content:"";position:absolute;left:0;top:6px;width:10px;height:10px;border-radius:999px;
+      background:#fff;border:2px solid #cbd5e1
+    }
+    .tdate{font-family:var(--mono);font-size:12px;color:#94a3b8;margin-bottom:6px}
+    .tbox{
+      padding:12px;border-radius:14px;border:1px solid var(--border);
+      background:#fff;color:#475569;font-size:13px;line-height:1.5
+    }
+    .tbox strong{display:block;margin-bottom:4px;color:#0f172a}
+    .tbox.warn{background:var(--orangeSoft);border-color:#fed7aa}
+    .tbox.ok{background:var(--tealSoft);border-color:#ccfbf1}
+
+    /* Action plan */
+    .action-top{
+      background: var(--orangeSoft);
+      border:1px solid #fed7aa;
+      border-radius: var(--radius);
+      padding:16px;margin-bottom:14px
+    }
+    .action-top h3{margin:0 0 6px;font-size:16px;font-weight:900;color:#7c2d12}
+    .action-top p{margin:0;color:#9a3412;font-weight:700;font-size:13px}
+
+    .msg{
+      border:2px solid var(--border);
+      border-radius:16px;
+      overflow:hidden;
+      margin-bottom:14px;
+      background:#fff;
+    }
+    .msg.reco{border-color:#14b8a6}
+    .msghead{
+      display:flex;justify-content:space-between;align-items:center;
+      padding:10px 12px;border-bottom:1px solid var(--border);
+      background:#f8fafc;
+    }
+    .msg.reco .msghead{background:var(--tealSoft)}
+    .msgtitle{font-weight:900;color:#0f172a;font-size:13px}
+    .tag{
+      font-size:10px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+      padding:4px 8px;border-radius:999px;color:#fff;background:var(--teal)
+    }
+    .msggrid{display:grid;grid-template-columns:1fr;gap:0}
+    @media(min-width:900px){.msggrid{grid-template-columns:1fr 1fr}}
+    .cell{padding:12px}
+    .cell.pt{background:#fff}
+    .cell.es{background:rgba(248,250,252,.8)}
+    .celltop{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px}
+    .label{
+      font-size:11px;font-weight:900;letter-spacing:.12em;text-transform:uppercase;
+      color:var(--teal);
+      display:flex;align-items:center;gap:8px
+    }
+    .label.es{color:#94a3b8}
+    .copybtn{
+      font-size:11px;font-weight:900;border:0;cursor:pointer;
+      padding:7px 10px;border-radius:10px;
+      background:#f1f5f9;color:#475569;
+      display:flex;align-items:center;gap:8px;
+    }
+    .copybtn:hover{background:#e2e8f0}
+    .code{
+      font-family:var(--mono);
+      font-size:12.5px;line-height:1.55;
+      background:#f8fafc;border:1px solid #e2e8f0;
+      padding:10px;border-radius:12px;color:#334155;
+      white-space:pre-line;
+    }
+    .esref{
+      font-size:12.5px;line-height:1.55;color:#64748b;
+      white-space:pre-line;font-style:italic;
+    }
+    .toast{
+      position:fixed;bottom:16px;left:50%;transform:translateX(-50%);
+      background:#0f172a;color:#fff;padding:10px 12px;border-radius:12px;
+      font-weight:800;font-size:12px;opacity:0;pointer-events:none;
+      transition:opacity .18s ease;
+    }
+    .toast.show{opacity:1}
+  </style>
+</head>
+
+<body>
+  <!-- HEADER -->
+  <header class="header shadow">
+    <div class="wrap header-inner">
+      <div>
+        <div class="pill">Retail / Moda Brasil</div>
+        <div class="h1">Análisis IQL: Riachuelo</div>
+        <div class="sub">Caso: Alexandre Boaventura | Cierre Operativo Pendiente</div>
+      </div>
+
+      <div class="right-head">
+        <!-- Si tu logo es GIF, cambia a mti-logo.gif -->
+        <img class="logo" src="mti-logo.png" alt="MTI Selling" />
+        <div class="statusbox">
+          <div class="smallmuted">Estado actual</div>
+          <div class="statusbadge">⚡ IQL CALIENTE</div>
+          <div class="smallmuted">Ult. interacción: 14 Nov</div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <div class="grid">
+      <!-- LEFT -->
+      <aside class="side">
+        <section class="card section shadow">
+          <div class="sec-title">Perfil del lead</div>
+
+          <div class="profile">
+            <div class="avatar">AB</div>
+            <div>
+              <p class="name">Alexandre Boaventura</p>
+              <div class="role">IT Manager</div>
+              <div class="tenure">Lojas Riachuelo</div>
+            </div>
+          </div>
+
+          <div class="kv">🏢 <strong>Retail Enterprise / Moda</strong></div>
+          <div class="kv">📍 Brasil</div>
+          <div class="kv">💼 IT / Agile / Transformación Digital</div>
+        </section>
+
+        <section class="card section shadow">
+          <div class="sec-title">Alineación con ICP</div>
+
+          <div class="icpbar">
+            <div class="icphead"><span>Industria (Retail Ent.)</span><span>10/10</span></div>
+            <div class="barbg"><div class="barfill" style="width:100%;background:#14b8a6;"></div></div>
+          </div>
+
+          <div class="icpbar">
+            <div class="icphead"><span>Tamaño / complejidad</span><span>10/10</span></div>
+            <div class="barbg"><div class="barfill" style="width:100%;background:#14b8a6;"></div></div>
+          </div>
+
+          <div class="icpbar">
+            <div class="icphead"><span>Cargo (IT Decisor)</span><span>9/10</span></div>
+            <div class="barbg"><div class="barfill" style="width:90%;background:#fb923c;"></div></div>
+          </div>
+
+          <div class="icpbar">
+            <div class="icphead"><span>Interés explícito</span><span>10/10</span></div>
+            <div class="barbg"><div class="barfill" style="width:100%;background:#22c55e;"></div></div>
+          </div>
+
+          <div class="note">
+            <strong>Análisis:</strong> Alineación perfecta. Un perfil IT en un gigante como Riachuelo es ideal para una venta técnica/consultiva. El interés es real y explícito (pidió reunión).
+          </div>
+        </section>
+      </aside>
+
+      <!-- RIGHT -->
+      <section class="tabs-wrap">
+        <div class="tabs shadow">
+          <button class="tabbtn active" data-tab="diag">Diagnóstico</button>
+          <button class="tabbtn" data-tab="time">Timeline</button>
+          <button class="tabbtn orange" data-tab="plan">Plan de Recuperación</button>
+        </div>
+
+        <!-- Diagnóstico -->
+        <div class="panel active" id="panel-diag">
+          <div class="diaggrid" style="margin-top:14px;">
+            <div class="card shadow good box">
+              <h3 class="boxtitle good">✅ Fortalezas</h3>
+              <ul>
+                <li>Persistencia bien manejada y mensajes progresivos (valor, dolor, casos).</li>
+                <li>Empatía ante la ausencia por vacaciones.</li>
+                <li>El lead propuso fecha futura (señal fuerte).</li>
+              </ul>
+            </div>
+
+            <div class="card shadow bad box">
+              <h3 class="boxtitle bad">⚠️ Fricciones</h3>
+              <ul>
+                <li>Faltó cerrar agenda inmediatamente cuando se declaró disponible.</li>
+                <li>Último seguimiento (14 Nov) fue una pregunta abierta.</li>
+                <li>Faltó reforzar beneficios específicos para IT (integración).</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="conclusion card shadow">
+            <h3>Conclusión del analista</h3>
+            El interés es claro y explícito. El bloqueo no es conceptual ni de timing, sino de <strong>cierre operativo</strong>. Alexandre es un IQL caliente que pidió agenda. El riesgo es que la conversación se enfríe sin un CTA con fechas concretas.
+          </div>
+        </div>
+
+        <!-- Timeline -->
+        <div class="panel" id="panel-time" style="margin-top:14px;">
+          <div class="card shadow timeline">
+            <h3 style="margin:0 0 10px;font-size:14px;font-weight:900;">Historial de interacción</h3>
+
+            <div class="titem">
+              <div class="tdate">17 Sept</div>
+              <div class="tbox">
+                <strong>Conexión inicial</strong>
+                Juliana contacta. Siguen mensajes de valor y dolores (18–21 Sept).
+              </div>
+            </div>
+
+            <div class="titem">
+              <div class="tdate">24 Sept</div>
+              <div class="tbox">
+                <strong>Prueba social</strong>
+                Envío de casos de éxito (Movistar, Pax) + solicitud de reunión.
+              </div>
+            </div>
+
+            <div class="titem">
+              <div class="tdate">26 Sept – 15:41</div>
+              <div class="tbox ok">
+                <strong>Respuesta del lead (IQL)</strong>
+                “Estuve de vacaciones. Podemos ver agenda para 2da semana de Nov”.
+              </div>
+            </div>
+
+            <div class="titem">
+              <div class="tdate">29 Sept</div>
+              <div class="tbox">
+                <strong>Confirmación</strong>
+                Se acuerda esperar a noviembre.
+              </div>
+            </div>
+
+            <div class="titem">
+              <div class="tdate">14 Nov – 17:02</div>
+              <div class="tbox warn">
+                <strong>Seguimiento abierto</strong>
+                Juliana intenta coordinar pero sin proponer horarios fijos. Sin respuesta.
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Plan de recuperación -->
+        <div class="panel" id="panel-plan" style="margin-top:14px;">
+          <div class="action-top shadow">
+            <h3>✉️ Estrategia de cierre</h3>
+            <p>Objetivo: liderar el cierre de agenda con opciones concretas.</p>
+          </div>
+
+          <!-- OPCIÓN 1 -->
+          <div class="msg reco shadow">
+            <div class="msghead">
+              <div class="msgtitle">Opción 1: Cierre directo (RECOMENDADA)</div>
+              <div class="tag">Recomendada</div>
+            </div>
+
+            <div class="msggrid">
+              <div class="cell pt">
+                <div class="celltop">
+                  <div class="label">🌐 Portugués (Enviar)</div>
+                  <button class="copybtn" data-copy="pt1">📋 Copiar</button>
+                </div>
+                <div class="code" id="pt1">Oi Alexandre, tudo bem? 😊
+Perfeito, obrigado pela confirmação.
+
+Para facilitar, te proponho dois horários rápidos (15 min):
+• Quarta-feira – 10h
+• Quinta-feira – 15h
+
+A ideia é te mostrar como outras varejistas estão usando um modelo conversacional (IA + humanos) para ganhar eficiência operacional e melhorar a experiência do cliente.
+
+Algum desses horários funciona para você?</div>
+              </div>
+
+              <div class="cell es">
+                <div class="celltop">
+                  <div class="label es">💬 Español (Ref)</div>
+                </div>
+                <div class="esref">Hola Alexandre 😊
+Perfecto, gracias por la confirmación.
+
+Para facilitar, te propongo dos horarios cortos (15 min):
+• Miércoles – 10h
+• Jueves – 15h
+
+La idea es mostrarte cómo otras empresas de retail están usando un modelo conversacional (IA + humanos) para ganar eficiencia operativa y mejorar la experiencia del cliente.
+¿Alguno te funciona?</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- OPCIÓN 2 -->
+          <div class="msg shadow">
+            <div class="msghead">
+              <div class="msgtitle">Opción 2: IT / Transformación Digital</div>
+              <div style="width:90px"></div>
+            </div>
+
+            <div class="msggrid">
+              <div class="cell pt">
+                <div class="celltop">
+                  <div class="label">🌐 Portugués (Enviar)</div>
+                  <button class="copybtn" data-copy="pt2">📋 Copiar</button>
+                </div>
+                <div class="code" id="pt2">Alexandre, aproveitando seu foco em IT e transformação digital:
+
+Estamos ajudando varejistas a integrar canais como WhatsApp, web e atendimento humano, reduzindo carga operacional e ganhando escala com IA.
+
+Se fizer sentido, posso te mostrar isso em 15 minutos.
+
+Tenho disponibilidade:
+• Terça – 11h
+• Quinta – 16h
+
+Qual funciona melhor?</div>
+              </div>
+
+              <div class="cell es">
+                <div class="celltop">
+                  <div class="label es">💬 Español (Ref)</div>
+                </div>
+                <div class="esref">Alexandre, aprovechando tu foco en IT y transformación digital:
+
+Estamos ayudando a retailers a integrar canales como WhatsApp, web y atención humana, reduciendo carga operativa y ganando escala con IA.
+
+Si te parece, puedo mostrártelo en 15 minutos.
+
+Tengo disponibilidad:
+• Martes – 11h
+• Jueves – 16h
+
+¿Cuál te queda mejor?</div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="toast" id="toast">Copiado ✅</div>
+
+  <script>
+    // Tabs
+    const btns = document.querySelectorAll("[data-tab]");
+    const panels = {
+      diag: document.getElementById("panel-diag"),
+      time: document.getElementById("panel-time"),
+      plan: document.getElementById("panel-plan"),
+    };
+
+    btns.forEach(b => {
+      b.addEventListener("click", () => {
+        btns.forEach(x => x.classList.remove("active"));
+        b.classList.add("active");
+
+        Object.values(panels).forEach(p => p.classList.remove("active"));
+        panels[b.dataset.tab].classList.add("active");
+      });
+    });
+
+    // Copy
+    const toast = document.getElementById("toast");
+    const showToast = () => {
+      toast.classList.add("show");
+      setTimeout(() => toast.classList.remove("show"), 900);
+    };
+
+    document.querySelectorAll("[data-copy]").forEach(btn => {
+      btn.addEventListener("click", async () => {
+        const id = btn.getAttribute("data-copy");
+        const el = document.getElementById(id);
+        const text = el ? el.innerText : "";
+        try {
+          await navigator.clipboard.writeText(text);
+          showToast();
+        } catch (e) {
+          const ta = document.createElement("textarea");
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          document.body.removeChild(ta);
+          showToast();
+        }
+      });
+    });
+  </script>
+</body>
+</html>
 
